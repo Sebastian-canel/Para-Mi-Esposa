@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi Amor 💛 - Flores Amarillas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .font-cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+        .font-serif-title {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: 0 0 45px rgba(245, 158, 11, 0.7); }
+        }
+        .glow-effect {
+            animation: pulse-glow 3s infinite;
+        }
+
+        /* Falling Petals Canvas */
+        #petals-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Card flip / modal transition */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        /* Floating Hearts */
+        .heart {
+            position: absolute;
+            color: #f59e0b;
+            font-size: 20px;
+            animation: floatUp 4s linear forwards;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.8); opacity: 1; }
+            100% { transform: translateY(-120px) scale(1.3); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4 text-amber-900 relative">
+
+    <canvas id="petals-canvas"></canvas>
+
+    <!-- Audio Element (Soft Romantic Background Tone) -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- MAIN CONTAINER -->
+    <main class="relative z-20 max-w-lg w-full text-center">
+        
+        <!-- HEADER / TITLE -->
+        <div class="mb-6 animate-float">
+            <span class="inline-block bg-amber-100 text-amber-800 text-xs md:text-sm font-semibold px-4 py-1.5 rounded-full uppercase tracking-widest border border-amber-300 shadow-sm mb-3">
+                ✨ 21 de Septiembre ✨
+            </span>
+            <h1 class="font-serif-title text-4xl md:text-5xl font-bold text-amber-900 leading-tight">
+                Flores Amarillas <br><span class="font-cursive text-amber-600 text-5xl md:text-6xl">Para Ti, Mi Amor</span>
+            </h1>
+        </div>
+
+        <!-- HERO ILLUSTRATION (SVG Yellow Bouquet) -->
+        <div class="relative my-8 flex justify-center items-center">
+            <div class="absolute w-64 h-64 bg-amber-300/40 rounded-full filter blur-2xl -z-10 animate-pulse"></div>
+            
+            <div class="relative cursor-pointer hover:scale-105 transition-transform duration-500" onclick="triggerFlowerHearts(event)">
+                <svg width="220" height="220" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-xl">
+                    <!-- Ribbon / Wrapper -->
+                    <path d="M70 130 C 80 180, 120 180, 130 130 L115 110 L85 110 Z" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+                    <path d="M85 130 L115 130 C 110 150, 90 150, 85 130 Z" fill="#f59e0b"/>
+                    
+                    <!-- Stems -->
+                    <path d="M80 120 L60 80 M100 120 L100 75 M120 120 L140 80" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/>
+                    
+                    <!-- Flower 1 (Left) -->
+                    <g transform="translate(55,70)">
+                        <circle cx="0" cy="0" r="18" fill="#fbbf24"/>
+                        <circle cx="-12" cy="0" r="10" fill="#f59e0b" opacity="0.8"/>
+                        <circle cx="12" cy="0" r="10" fill="#f59e0b" opacity="0.8"/>
+                        <circle cx="0" cy="-12" r="10" fill="#f59e0b" opacity="0.8"/>
+                        <circle cx="0" cy="12" r="10" fill="#f59e0b" opacity="0.8"/>
+                        <circle cx="0" cy="0" r="8" fill="#78350f"/>
+                    </g>
+                    
+                    <!-- Flower 2 (Center Big) -->
+                    <g transform="translate(100,55)">
+                        <circle cx="0" cy="0" r="22" fill="#fef08a"/>
+                        <circle cx="-15" cy="0" r="12" fill="#fbbf24"/>
+                        <circle cx="15" cy="0" r="12" fill="#fbbf24"/>
+                        <circle cx="0" cy="-15" r="12" fill="#fbbf24"/>
+                        <circle cx="0" cy="15" r="12" fill="#fbbf24"/>
+                        <circle cx="-10" cy="-10" r="10" fill="#f59e0b"/>
+                        <circle cx="10" cy="10" r="10" fill="#f59e0b"/>
+                        <circle cx="10" cy="-10" r="10" fill="#f59e0b"/>
+                        <circle cx="-10" cy="10" r="10" fill="#f59e0b"/>
+                        <circle cx="0" cy="0" r="10" fill="#451a03"/>
+                    </g>
+                    
+                    <!-- Flower 3 (Right) -->
+                    <g transform="translate(145,70)">
+                        <circle cx="0" cy="0" r="18" fill="#fbbf24"/>
+                        <circle cx="-12" cy="0" r="10" fill="#f59e0b" opacity="0.8"/>
+                        <circle cx="12" cy="0" r="10" fill="#f59e0b" opacity="0.8"/>
+                        <circle cx="0" cy="-12" r="10" fill="#f59e0b" opacity="0.8"/>
+                        <circle cx="0" cy="12" r="10" fill="#f59e0b" opacity="0.8"/>
+                        <circle cx="0" cy="0" r="8" fill="#78350f"/>
+                    </g>
+
+                    <!-- Little sparkle stars -->
+                    <path d="M40 40 L43 47 L50 50 L43 53 L40 60 L37 53 L30 50 L37 47 Z" fill="#fbbf24"/>
+                    <path d="M160 30 L162 35 L167 37 L162 39 L160 44 L158 39 L153 37 L158 35 Z" fill="#f59e0b"/>
+                </svg>
+            </div>
+        </div>
+
+        <p class="text-amber-800 text-sm md:text-base font-light mb-6 px-4">
+            Aunque la distancia nos separe hoy, quiero que este detalle ilumine tu día tanto como tú iluminas mi vida todos los días. 💛
+        </p>
+
+        <!-- BUTTON TO OPEN GIFT CARD -->
+        <button id="open-btn" onclick="openGiftModal()" class="glow-effect bg-amber-500 hover:bg-amber-600 text-white font-semibold text-lg px-8 py-4 rounded-full shadow-lg transform transition active:scale-95 flex items-center justify-center gap-3 mx-auto">
+            <span>🎁 Abrir tu Carta Especial</span>
+            <svg class="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </button>
+
+        <!-- MUSIC CONTROLLER TOGGLE -->
+        <div class="mt-6 flex justify-center items-center gap-2">
+            <button id="music-btn" onclick="toggleMusic()" class="text-xs text-amber-800 bg-amber-200/60 hover:bg-amber-200 border border-amber-300 px-3 py-1.5 rounded-full flex items-center gap-1.5 transition">
+                <span id="music-icon">🎵</span>
+                <span id="music-text">Activar Música</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- MODAL / LETTER CARD -->
+    <div id="gift-modal" class="fixed inset-0 bg-amber-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-500">
+        <div id="modal-card" class="glass-card max-w-lg w-full rounded-3xl p-6 md:p-8 text-amber-950 shadow-2xl relative transform scale-90 transition-transform duration-500 max-h-[90vh] overflow-y-auto">
+            
+            <!-- Close Button -->
+            <button onclick="closeGiftModal()" class="absolute top-4 right-4 text-amber-700 hover:text-amber-900 bg-amber-100 hover:bg-amber-200 rounded-full w-8 h-8 flex items-center justify-center transition">
+                ✕
+            </button>
+
+            <!-- Letter Content -->
+            <div class="text-center">
+                <div class="text-4xl mb-2">💐✨</div>
+                <h2 class="font-serif-title text-2xl md:text-3xl font-bold text-amber-900 mb-1">
+                    Para la dueña de mi corazón
+                </h2>
+                <p class="font-cursive text-amber-700 text-2xl mb-4">Feliz 21 de Septiembre</p>
+                <div class="w-16 h-0.5 bg-amber-400 mx-auto mb-6"></div>
+            </div>
+
+            <!-- PERSONALIZED LETTER BODY -->
+            <div class="space-y-4 text-sm md:text-base leading-relaxed text-amber-900/90 font-light text-justify">
+                <p>
+                    Hoy, 21 de septiembre, en muchos lugares se regalan flores amarillas para celebrar el amor sincero, la luz y la ilusión de caminar juntos. No quería dejar pasar este día sin regalarte las tuyas, llenas de todo mi cariño.
+                </p>
+                <p>
+                    Estas flores amarillas representan la alegría infinita que me da tenerte en mi vida, la calidez de tu sonrisa y la certeza de que, sin importar cuántos kilómetros nos separen hoy, **mi amor y mis pensamientos siempre están a tu lado**.
+                </p>
+                <p>
+                    Gracias por ser mi lugar seguro, por llenar mis días de color y por construir a mi lado esta historia tan bonita. Deseo que este detalle virtual te saque una gran sonrisa y te recuerde lo profundamente especial e importante que eres para mí.
+                </p>
+                <p class="font-semibold text-center text-amber-800 pt-2">
+                    ¡Que tu día sea tan radiante y hermoso como tú! 💛🌻
+                </p>
+            </div>
+
+            <!-- Letter Footer / Signature -->
+            <div class="mt-8 pt-4 border-t border-amber-200/80 text-center">
+                <p class="text-xs uppercase tracking-widest text-amber-700 font-semibold">Con todo mi amor</p>
+                <p class="font-cursive text-3xl text-amber-900 mt-1">Siempre tuyo 💛</p>
+            </div>
+
+            <!-- Extra Interactive Buttons inside Modal -->
+            <div class="mt-6 flex justify-center gap-3">
+                <button onclick="triggerConfettiBurst()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs md:text-sm font-semibold px-5 py-2.5 rounded-full shadow transition">
+                    ✨ Lanzar más Flores
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* --- PETALS ANIMATION CANVAS --- */
+        const canvas = document.getElementById('petals-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        class Petal {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * -height;
+                this.size = Math.random() * 8 + 6;
+                this.speedY = Math.random() * 1.5 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.angle = Math.random() * 360;
+                this.spin = (Math.random() - 0.5) * 0.02;
+                this.color = ['#fef08a', '#fbbf24', '#f59e0b', '#fde047'][Math.floor(Math.random() * 4)];
+                this.opacity = Math.random() * 0.7 + 0.3;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += Math.sin(this.y * 0.01) + this.speedX;
+                this.angle += this.spin;
+
+                if (this.y > height + 20) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                
+                // Draw petal shape
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(-this.size, -this.size, -this.size, this.size, 0, this.size * 1.8);
+                ctx.bezierCurveTo(this.size, this.size, this.size, -this.size, 0, 0);
+                ctx.fill();
+                
+                ctx.restore();
+            }
+        }
+
+        const petals = Array.from({ length: 45 }, () => new Petal());
+
+        function animatePetals() {
+            ctx.clearRect(0, 0, width, height);
+            petals.forEach(petal => {
+                petal.update();
+                petal.draw();
+            });
+            requestAnimationFrame(animatePetals);
+        }
+
+        animatePetals();
+
+        /* --- MODAL LOGIC & CONFETTI --- */
+        const modal = document.getElementById('gift-modal');
+        const modalCard = document.getElementById('modal-card');
+
+        function openGiftModal() {
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalCard.classList.remove('scale-90');
+            modalCard.classList.add('scale-100');
+            
+            // Try playing audio on user interaction
+            playAudio();
+            
+            // Trigger festive golden confetti
+            triggerConfettiBurst();
+        }
+
+        function closeGiftModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalCard.classList.remove('scale-100');
+            modalCard.classList.add('scale-90');
+        }
+
+        function triggerConfettiBurst() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#fbbf24', '#f59e0b', '#fef08a', '#ffffff', '#eab308']
+                });
+            }
+        }
+
+        /* --- FLOATING HEARTS ON CLICK --- */
+        function triggerFlowerHearts(event) {
+            for (let i = 0; i < 6; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerText = ['💛', '🌻', '✨', '💖'][Math.floor(Math.random() * 4)];
+                heart.style.left = (event.clientX + (Math.random() * 60 - 30)) + 'px';
+                heart.style.top = (event.clientY + (Math.random() * 60 - 30)) + 'px';
+                document.body.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 4000);
+            }
+        }
+
+        /* --- AUDIO PLAYER LOGIC --- */
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+        const musicIcon = document.getElementById('music-icon');
+        const musicText = document.getElementById('music-text');
+        let isPlaying = false;
+
+        function playAudio() {
+            if (!isPlaying) {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    musicIcon.innerText = '🔊';
+                    musicText.innerText = 'Pausar Música';
+                }).catch(() => {
+                    // Autoplay prevented by browser, waiting for explicit user click
+                });
+            }
+        }
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                musicIcon.innerText = '🎵';
+                musicText.innerText = 'Activar Música';
+            } else {
+                audio.play();
+                isPlaying = true;
+                musicIcon.innerText = '🔊';
+                musicText.innerText = 'Pausar Música';
+            }
+        }
+    </script>
+</body>
+</html>
